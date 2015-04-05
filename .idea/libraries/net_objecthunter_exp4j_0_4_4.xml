@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="net.objecthunter:exp4j:0.4.4" type="repository">
+    <properties maven-id="net.objecthunter:exp4j:0.4.4" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/objecthunter/exp4j/0.4.4/exp4j-0.4.4.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/net/objecthunter/exp4j/0.4.4/exp4j-0.4.4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
