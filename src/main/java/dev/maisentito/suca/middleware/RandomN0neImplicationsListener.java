@@ -31,7 +31,7 @@ public class RandomN0neImplicationsListener extends ChannelMessagesPipeline.Mess
 
 	public RandomN0neImplicationsListener(Bundle globals) {
 		super(globals);
-		getGlobals().put(GLOBAL_PROBABILITY, 32);
+		getGlobals().put(GLOBAL_PROBABILITY, 128);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class RandomN0neImplicationsListener extends ChannelMessagesPipeline.Mess
 
 		if (event.getUser().getNick().toLowerCase().contains("n0ne")) {
 			Random r = new Random(System.currentTimeMillis());
-			if (r.nextInt() % getIntGlobal(GLOBAL_PROBABILITY, 32) == 0) {
+			if (r.nextInt() % getIntGlobal(GLOBAL_PROBABILITY, 128) == 0) {
 				event.getChannel().send().message("\u00033>implying n0ne is not a faggot");
 			}
 		}

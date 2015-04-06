@@ -26,6 +26,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class WordListener extends ChannelMessagesPipeline.MessageMiddleware {
 	private final Map<String, String> sResponses = new HashMap<>();
@@ -40,12 +41,17 @@ public class WordListener extends ChannelMessagesPipeline.MessageMiddleware {
 	@Override
 	public boolean onMessage(MessageEvent event) throws Throwable {
 		for (String sub : sResponses.keySet()) {
-			if (event.getMessage().toLowerCase().contains(sub)) {
+			if (containsWord(event.getMessage(), "\\b" + sub + "\\b")) {
 				event.getChannel().send().message(sResponses.get(sub));
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	public static boolean containsWord(String subject, String expr) {
+		Pattern p = Pattern.compile(expr, Pattern.CASE_INSENSITIVE);
+		return (p.matcher(subject).find());
 	}
 }
