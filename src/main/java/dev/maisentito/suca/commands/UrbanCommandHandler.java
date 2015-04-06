@@ -19,8 +19,8 @@
 
 package dev.maisentito.suca.commands;
 
-import dev.malu.liburban.Definition;
-import dev.malu.liburban.UrbanDictionary;
+import dev.maisentito.liburban.Definition;
+import dev.maisentito.liburban.UrbanDictionary;
 import dev.maisentito.suca.util.Bundle;
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.hooks.events.MessageEvent;
