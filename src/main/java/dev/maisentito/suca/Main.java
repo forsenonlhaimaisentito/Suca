@@ -61,6 +61,7 @@ public class Main {
 		commands.addCommandHandler("enit", new EnitCommandHandler(globals));
 		commands.addCommandHandler("eval", new EvalCommandHandler(globals));
 		commands.addCommandHandler("4chan", new FourChanCommandHandler(globals));
+		commands.addCommandHandler("timer", new TimerCommandHandler(globals));
 		// commands.addCommandHandler("define", new DefineCommandHandler(globals));
 		SimpleCommands.addAll(commands, globals);
 
@@ -95,7 +96,8 @@ public class Main {
 				.setMessageDelay(1500)
 				.buildConfiguration();
 
-		PircBotX bot = new PircBotX(configuration);
+
+		@SuppressWarnings("unchecked") PircBotX bot = new PircBotX(configuration);
 		bot.startBot();
 	}
 }
