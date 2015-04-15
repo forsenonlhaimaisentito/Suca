@@ -62,6 +62,7 @@ public class Main {
 		commands.addCommandHandler("eval", new EvalCommandHandler(globals));
 		commands.addCommandHandler("4chan", new FourChanCommandHandler(globals));
 		commands.addCommandHandler("timer", new TimerCommandHandler(globals));
+		commands.addCommandHandler("fizzbuzz", new FizzBuzzCommandHandler(globals));
 		// commands.addCommandHandler("define", new DefineCommandHandler(globals));
 		SimpleCommands.addAll(commands, globals);
 
