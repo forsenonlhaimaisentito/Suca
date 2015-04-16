@@ -49,6 +49,7 @@ public class Main {
 		globals.put(GLOBAL_USERAGENT, "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
 
 		HangmanCommandHandler hangman = new HangmanCommandHandler(globals);
+		SeenCommandHandler seen = new SeenCommandHandler(globals);
 
 		BotCommands commands = new BotCommands(globals);
 		commands.addCommandHandler(new AdminCommandHandler(globals));
@@ -62,6 +63,8 @@ public class Main {
 		commands.addCommandHandler(new FourChanCommandHandler(globals));
 		commands.addCommandHandler(new TimerCommandHandler(globals));
 		commands.addCommandHandler(new FizzBuzzCommandHandler(globals));
+		commands.addCommandHandler(seen);
+
 		// commands.addCommandHandler("define", new DefineCommandHandler(globals));
 		SimpleCommands.addAll(commands, globals);
 
@@ -93,6 +96,7 @@ public class Main {
 				.addListener(new JoinGreeterListener(globals))
 				.addListener(new KickRejoinListener())
 				.addListener(new KickRevengeListener())
+				.addListener(seen.getUpdater())
 				.setMessageDelay(1500)
 				.buildConfiguration();
 
