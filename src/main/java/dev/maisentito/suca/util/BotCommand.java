@@ -1,5 +1,5 @@
 /*
- * CommandHelp.java
+ * BotCommand.java
  *
  * Copyright (c) 2015  forsenonlhaimaisentito
  *
