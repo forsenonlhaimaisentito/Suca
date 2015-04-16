@@ -19,6 +19,7 @@
 
 package dev.maisentito.suca.commands;
 
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+@BotCommand(name = "4chan", minArgc = 3)
 public class FourChanCommandHandler extends BotCommands.CommandHandler {
 	public FourChanCommandHandler(Bundle globals) {
 		super(globals);
@@ -35,11 +37,6 @@ public class FourChanCommandHandler extends BotCommands.CommandHandler {
 
 	@Override
 	public void handleCommand(MessageEvent event, String[] args) throws Throwable {
-		if (args.length < 3) {
-			event.respond("!4chan: not enough arguments");
-			return;
-		}
-
 		if (!FourChan.BOARDS.contains(args[1])) {
 			event.respond("!4chan: invalid board: " + args[1]);
 			return;
@@ -51,7 +48,7 @@ public class FourChanCommandHandler extends BotCommands.CommandHandler {
 				break;
 			default:
 				event.respond("!4chan: command not found: " + args[0]);
-				return;
+				break;
 		}
 	}
 
@@ -62,11 +59,11 @@ public class FourChanCommandHandler extends BotCommands.CommandHandler {
 
 	private void searchCommand(MessageEvent event, String[] args) throws IOException {
 		String seq = StringUtils.join(args, ' ', 2, args.length);
-		Pattern pattern = null;
+		Pattern pattern;
 		try {
 			pattern = Pattern.compile(seq, Pattern.CASE_INSENSITIVE);
 		} catch (PatternSyntaxException e) {
-
+			pattern = null;
 		}
 
 		for (FourChan.Catalog.Page page : FourChan.getCatalog(args[1]).pages) {

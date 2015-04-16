@@ -19,6 +19,7 @@
 
 package dev.maisentito.suca.commands;
 
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.Channel;
@@ -27,6 +28,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 import java.util.*;
 
+@BotCommand(name = "timer", minArgc = 2, help = "sets a timer, usage (DELAY is in seconds): !timer DELAY MESSAGE")
 public class TimerCommandHandler extends BotCommands.CommandHandler {
 	private Timer mTimer;
 	private List<UserTimer> mTasks;
@@ -39,11 +41,6 @@ public class TimerCommandHandler extends BotCommands.CommandHandler {
 
 	@Override
 	public synchronized void handleCommand(final MessageEvent event, String[] args) throws Throwable {
-		if (args.length < 2) {
-			event.respond("timer: missing argument(s)");
-			return;
-		}
-
 		long ms;
 		try {
 			ms = Long.parseLong(args[0]) * 1000;
@@ -64,11 +61,6 @@ public class TimerCommandHandler extends BotCommands.CommandHandler {
 		mTimer.schedule(task, ms);
 		mTasks.add(task);
 		event.respond("timer started");
-	}
-
-	@Override
-	public String getHelp(MessageEvent event, String[] args) {
-		return "sets a timer, usage (DELAY is in seconds): !timer DELAY MESSAGE";
 	}
 
 	class UserTimer extends TimerTask {

@@ -20,6 +20,7 @@
 package dev.maisentito.suca.commands;
 
 import dev.maisentito.suca.Main;
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -27,6 +28,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.pircbotx.hooks.events.MessageEvent;
 
+@BotCommand(name = "enit", minArgc = 1, help = "translates a word from english to italian")
 public class EnitCommandHandler extends BotCommands.CommandHandler {
 	public EnitCommandHandler(Bundle globals) {
 		super(globals);
@@ -34,22 +36,13 @@ public class EnitCommandHandler extends BotCommands.CommandHandler {
 
 	@Override
 	public void handleCommand(MessageEvent event, String[] args) throws Throwable {
-		if (args.length >= 1) {
-			Document doc = Jsoup.connect("http://www.wordreference.com/enit/" + StringUtils.join(args, ' '))
-					.userAgent(getStringGlobal(Main.GLOBAL_USERAGENT, ""))
-					.referrer("http://www.google.com/")
-					.get();
-			Elements row = doc.body().select("table.WRD:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2)");
-			row.select(".tooltip").remove();
-			String def = row.text().trim().replace("\n", "");
-			event.respond(def);
-		} else {
-			event.respond("enit: missing argument");
-		}
-	}
-
-	@Override
-	public String getHelp(MessageEvent event, String[] args) {
-		return "translates a word from english to italian";
+		Document doc = Jsoup.connect("http://www.wordreference.com/enit/" + StringUtils.join(args, ' '))
+				.userAgent(getStringGlobal(Main.GLOBAL_USERAGENT, ""))
+				.referrer("http://www.google.com/")
+				.get();
+		Elements row = doc.body().select("table.WRD:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2)");
+		row.select(".tooltip").remove();
+		String def = row.text().trim().replace("\n", "");
+		event.respond(def);
 	}
 }

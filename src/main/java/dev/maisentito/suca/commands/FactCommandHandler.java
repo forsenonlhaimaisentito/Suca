@@ -20,10 +20,12 @@
 package dev.maisentito.suca.commands;
 
 import dev.maisentito.suca.Main;
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import org.jsoup.Jsoup;
 import org.pircbotx.hooks.events.MessageEvent;
 
+@BotCommand(name = "fact", help = "retrieves and shows a random fact from the internet")
 public class FactCommandHandler extends BotCommands.CommandHandler {
 	public FactCommandHandler(Bundle globals) {
 		super(globals);
@@ -37,10 +39,5 @@ public class FactCommandHandler extends BotCommands.CommandHandler {
 						.referrer("http://www.google.com/")
 						.get().body()
 						.select(".bkline > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1)").text().trim());
-	}
-
-	@Override
-	public String getHelp(MessageEvent event, String[] args) {
-		return "fetches a random fact from the internet";
 	}
 }

@@ -20,6 +20,7 @@
 package dev.maisentito.suca.commands;
 
 import dev.maisentito.suca.Main;
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import org.jsoup.Jsoup;
 import org.pircbotx.hooks.events.MessageEvent;
@@ -28,11 +29,12 @@ import java.util.Random;
 
 public class SimpleCommands {
 	public static void addAll(BotCommands commands, Bundle globals) {
-		commands.addCommandHandler("coin", new CoinCommandHandler(globals));
-		commands.addCommandHandler("dice", new DiceCommandHandler(globals));
-		commands.addCommandHandler("ego", new EgoCommandHandler(globals));
+		commands.addCommandHandler(new CoinCommandHandler(globals));
+		commands.addCommandHandler(new DiceCommandHandler(globals));
+		commands.addCommandHandler(new EgoCommandHandler(globals));
 	}
 
+	@BotCommand(name = "coin", help = "flips a coin")
 	public static class CoinCommandHandler extends BotCommands.CommandHandler {
 		public CoinCommandHandler(Bundle globals) {
 			super(globals);
@@ -42,13 +44,9 @@ public class SimpleCommands {
 		public void handleCommand(MessageEvent event, String[] args) throws Throwable {
 			event.respond((new Random().nextBoolean()) ? "Head" : "Tail");
 		}
-
-		@Override
-		public String getHelp(MessageEvent event, String[] args) {
-			return "flips a coin";
-		}
 	}
 
+	@BotCommand(name = "dice", help = "extracts a random number from 1 to 6")
 	public static class DiceCommandHandler extends BotCommands.CommandHandler {
 		public DiceCommandHandler(Bundle globals) {
 			super(globals);
@@ -58,13 +56,9 @@ public class SimpleCommands {
 		public void handleCommand(MessageEvent event, String[] args) throws Throwable {
 			event.respond(Integer.toString(new Random().nextInt(6) + 1));
 		}
-
-		@Override
-		public String getHelp(MessageEvent event, String[] args) {
-			return "extracts a random number from 1 to 6";
-		}
 	}
 
+	@BotCommand(name = "ego", help = "just try it")
 	public static class EgoCommandHandler extends BotCommands.CommandHandler {
 		public EgoCommandHandler(Bundle globals) {
 			super(globals);
@@ -86,11 +80,6 @@ public class SimpleCommands {
 			} else {
 				event.respond("You are a faggot.");
 			}
-		}
-
-		@Override
-		public String getHelp(MessageEvent event, String[] args) {
-			return "just try it";
 		}
 	}
 }

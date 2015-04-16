@@ -19,9 +19,11 @@
 
 package dev.maisentito.suca.commands;
 
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import org.pircbotx.hooks.events.MessageEvent;
 
+@BotCommand(name = "fizzbuzz", minArgc = 1, help = "usage: fizzbuzz NUMBER")
 public class FizzBuzzCommandHandler extends BotCommands.CommandHandler {
 	public FizzBuzzCommandHandler(Bundle globals) {
 		super(globals);
@@ -29,19 +31,15 @@ public class FizzBuzzCommandHandler extends BotCommands.CommandHandler {
 
 	@Override
 	public void handleCommand(MessageEvent event, String[] args) throws Throwable {
-		if (args.length == 0) {
-			event.respond("!fizzbuzz: not enough arguments");
-		} else {
-			long n;
-			try {
-				n = Long.parseLong(args[0]);
-			} catch (NumberFormatException e) {
-				event.respond("!fizzbuzz: invalid argument");
-				return;
-			}
-
-			event.respond("!fizzbuzz: " + args[0] + ": " + fizzBuzz(n));
+		long n;
+		try {
+			n = Long.parseLong(args[0]);
+		} catch (NumberFormatException e) {
+			event.respond("!fizzbuzz: invalid argument");
+			return;
 		}
+
+		event.respond("!fizzbuzz: " + args[0] + ": " + fizzBuzz(n));
 	}
 
 	public static String fizzBuzz(long n) {

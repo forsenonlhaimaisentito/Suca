@@ -20,15 +20,15 @@
 package dev.maisentito.suca.commands;
 
 import dev.maisentito.suca.Main;
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import java.util.Arrays;
 
+@BotCommand(name = "admin", minArgc = 1)
 public class AdminCommandHandler extends BotCommands.CommandHandler {
-
-
 	public AdminCommandHandler(Bundle globals) {
 		super(globals);
 	}

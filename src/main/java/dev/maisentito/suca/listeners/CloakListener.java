@@ -23,19 +23,25 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.ServerResponseEvent;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CloakListener extends ListenerAdapter<PircBotX> {
 	private int mCode;
 	private List<String> mChannels;
 
-	public CloakListener(List<String> channels) {
+	public CloakListener(String... channels) {
 		this(396, channels);
 	}
 
-	public CloakListener(int code, List<String> channels) {
+	public CloakListener(int code, String... channels) {
 		mCode = code;
-		mChannels = channels;
+		if (channels.length == 1) {
+			mChannels = Collections.singletonList(channels[0]);
+		} else {
+			mChannels = Arrays.asList(channels);
+		}
 	}
 
 	@Override

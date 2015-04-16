@@ -21,6 +21,7 @@ package dev.maisentito.suca.commands;
 
 import dev.maisentito.suca.Main;
 import dev.maisentito.suca.listeners.ChannelMessagesPipeline;
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import dev.maisentito.suca.util.GlobalsUser;
 import org.apache.commons.lang3.StringUtils;
@@ -58,6 +59,11 @@ public class BotCommands extends ChannelMessagesPipeline.MessageMiddleware {
 		 * @return the one-line help message or <code>null</code>
 		 */
 		public String getHelp(MessageEvent event, String[] args) {
+			BotCommand attrs;
+			if ((attrs = getClass().getAnnotation(BotCommand.class)) != null) {
+				return attrs.help();
+			}
+
 			return null;
 		}
 	}
@@ -104,6 +110,13 @@ public class BotCommands extends ChannelMessagesPipeline.MessageMiddleware {
 		});
 	}
 
+	public void addCommandHandler(CommandHandler handler) {
+		BotCommand attrs;
+		if ((handler != null) && ((attrs = handler.getClass().getAnnotation(BotCommand.class)) != null)) {
+			addCommandHandler(attrs.name(), handler);
+		}
+	}
+
 	public void addCommandHandler(String command, CommandHandler handler) {
 		if ((command != null) && (handler != null)) {
 			mCommandHandlers.put(command, handler);
@@ -132,10 +145,18 @@ public class BotCommands extends ChannelMessagesPipeline.MessageMiddleware {
 		if (event.getMessage().startsWith(COMMAND_PREFIX) && !event.getUser().equals(event.getBot().getUserBot())) {
 			String[] parts = event.getMessage().substring(1).split("\\s+");
 			if ((parts.length > 0) && (mCommandHandlers.containsKey(parts[0]))) {
+				CommandHandler handler = mCommandHandlers.get(parts[0]);
+
+				BotCommand attrs = handler.getClass().getAnnotation(BotCommand.class);
+				if ((attrs != null) && (parts.length <= attrs.minArgc())) {
+					event.respond(COMMAND_PREFIX + parts[0] + ": not enough arguments");
+					return true;
+				}
+
 				if (parts.length > 1) {
-					mCommandHandlers.get(parts[0]).handleCommand(event, Arrays.copyOfRange(parts, 1, parts.length));
+					handler.handleCommand(event, Arrays.copyOfRange(parts, 1, parts.length));
 				} else {
-					mCommandHandlers.get(parts[0]).handleCommand(event, new String[]{ });
+					handler.handleCommand(event, new String[]{});
 				}
 				return true;
 			}

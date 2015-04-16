@@ -20,11 +20,13 @@
 package dev.maisentito.suca.commands;
 
 import dev.maisentito.suca.Main;
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.pircbotx.hooks.events.MessageEvent;
 
+@BotCommand(name = "quote", help = "retrieves and shows a random quote from the internet")
 public class QuoteCommandHandler extends BotCommands.CommandHandler {
 	public QuoteCommandHandler(Bundle globals) {
 		super(globals);
@@ -39,10 +41,5 @@ public class QuoteCommandHandler extends BotCommands.CommandHandler {
 		String quote = doc.body().select("dt.quote:nth-child(1) > a:nth-child(1)").text().trim().replace("\n", "");
 		String author = doc.body().select("dd.author:nth-child(2) > b:nth-child(2) > a:nth-child(1)").text().trim().replace("\n", "");
 		event.getChannel().send().message(String.format("\u201C%s\u201D \u2014 %s", quote, author));
-	}
-
-	@Override
-	public String getHelp(MessageEvent event, String[] args) {
-		return "fetches a random quote from the internet";
 	}
 }

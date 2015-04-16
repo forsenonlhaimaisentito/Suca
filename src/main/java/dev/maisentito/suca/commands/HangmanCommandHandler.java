@@ -21,11 +21,13 @@ package dev.maisentito.suca.commands;
 
 import dev.maisentito.suca.Main;
 import dev.maisentito.suca.listeners.ChannelMessagesPipeline;
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import org.jsoup.Jsoup;
 import org.pircbotx.User;
 import org.pircbotx.hooks.events.MessageEvent;
 
+@BotCommand(name = "hangman")
 public class HangmanCommandHandler extends BotCommands.CommandHandler {
 	private String mWord;
 	private Hangman mGame;
@@ -59,6 +61,7 @@ public class HangmanCommandHandler extends BotCommands.CommandHandler {
 		return mListener;
 	}
 
+	// TODO Fix this mess
 	public class HangmanGuessListener extends ChannelMessagesPipeline.MessageMiddleware {
 		public HangmanGuessListener(Bundle globals) {
 			super(globals);

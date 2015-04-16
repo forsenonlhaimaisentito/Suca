@@ -21,12 +21,14 @@ package dev.maisentito.suca.commands;
 
 import dev.maisentito.liburban.Definition;
 import dev.maisentito.liburban.UrbanDictionary;
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import java.util.List;
 
+@BotCommand(name = "urban", minArgc = 1, help = "retrieves the first definition of the given term from Urban Dictionary")
 public class UrbanCommandHandler extends BotCommands.CommandHandler {
 	public UrbanCommandHandler(Bundle globals) {
 		super(globals);
@@ -34,21 +36,12 @@ public class UrbanCommandHandler extends BotCommands.CommandHandler {
 
 	@Override
 	public void handleCommand(MessageEvent event, String[] args) throws Throwable {
-		if (args.length > 0) {
-			List<Definition> defs = UrbanDictionary.define(StringUtils.join(args, ' ')).getList();
-			if (!defs.isEmpty()) {
-				Definition def = defs.get(0);
-				event.respond(String.format("%s: %s", def.getWord(), def.getDefinition()));
-			} else {
-				event.respond("no results");
-			}
+		List<Definition> defs = UrbanDictionary.define(StringUtils.join(args, ' ')).getList();
+		if (!defs.isEmpty()) {
+			Definition def = defs.get(0);
+			event.respond(String.format("%s: %s", def.getWord(), def.getDefinition()));
 		} else {
-			event.respond("not enough arguments");
+			event.respond("no results");
 		}
-	}
-
-	@Override
-	public String getHelp(MessageEvent event, String[] args) {
-		return "retrieves the first definition of the given term from Urban Dictionary";
 	}
 }

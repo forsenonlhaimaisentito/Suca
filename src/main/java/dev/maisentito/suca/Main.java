@@ -32,7 +32,6 @@ import sun.security.util.Password;
 
 import javax.net.ssl.SSLSocketFactory;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 public class Main {
 	public static final String NICK = "Suca";
@@ -52,17 +51,17 @@ public class Main {
 		HangmanCommandHandler hangman = new HangmanCommandHandler(globals);
 
 		BotCommands commands = new BotCommands(globals);
-		commands.addCommandHandler("admin", new AdminCommandHandler(globals));
-		commands.addCommandHandler("quote", new QuoteCommandHandler(globals));
-		commands.addCommandHandler("urban", new UrbanCommandHandler(globals));
-		commands.addCommandHandler("fact", new FactCommandHandler(globals));
-		commands.addCommandHandler("hangman", hangman);
-		commands.addCommandHandler("iten", new ItenCommandHandler(globals));
-		commands.addCommandHandler("enit", new EnitCommandHandler(globals));
-		commands.addCommandHandler("eval", new EvalCommandHandler(globals));
-		commands.addCommandHandler("4chan", new FourChanCommandHandler(globals));
-		commands.addCommandHandler("timer", new TimerCommandHandler(globals));
-		commands.addCommandHandler("fizzbuzz", new FizzBuzzCommandHandler(globals));
+		commands.addCommandHandler(new AdminCommandHandler(globals));
+		commands.addCommandHandler(new QuoteCommandHandler(globals));
+		commands.addCommandHandler(new UrbanCommandHandler(globals));
+		commands.addCommandHandler(new FactCommandHandler(globals));
+		commands.addCommandHandler(hangman);
+		commands.addCommandHandler(new ItenCommandHandler(globals));
+		commands.addCommandHandler(new EnitCommandHandler(globals));
+		commands.addCommandHandler(new EvalCommandHandler(globals));
+		commands.addCommandHandler(new FourChanCommandHandler(globals));
+		commands.addCommandHandler(new TimerCommandHandler(globals));
+		commands.addCommandHandler(new FizzBuzzCommandHandler(globals));
 		// commands.addCommandHandler("define", new DefineCommandHandler(globals));
 		SimpleCommands.addAll(commands, globals);
 
@@ -90,7 +89,7 @@ public class Main {
 				.setServerPort(6697)
 				.setSocketFactory(SSLSocketFactory.getDefault())
 				.addListener(messagesPipeline)
-				.addListener(new CloakListener(Arrays.asList("#legit")))
+				.addListener(new CloakListener("#legit"))
 				.addListener(new JoinGreeterListener(globals))
 				.addListener(new KickRejoinListener())
 				.addListener(new KickRevengeListener())

@@ -19,11 +19,13 @@
 
 package dev.maisentito.suca.commands;
 
+import dev.maisentito.suca.util.BotCommand;
 import dev.maisentito.suca.util.Bundle;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.hooks.events.MessageEvent;
 
+@BotCommand(name = "eval", minArgc = 1, help = "Evaluates an arithmetic expression, constants e and pi available")
 public class EvalCommandHandler extends BotCommands.CommandHandler {
 	public EvalCommandHandler(Bundle globals) {
 		super(globals);
@@ -31,10 +33,6 @@ public class EvalCommandHandler extends BotCommands.CommandHandler {
 
 	@Override
 	public void handleCommand(MessageEvent event, String[] args) throws Throwable {
-		if (args.length == 0) {
-			event.respond("eval: not enough arguments");
-		}
-
 		double result = new ExpressionBuilder(StringUtils.join(args, ' '))
 				.variables("pi", "e")
 				.build()
@@ -43,10 +41,5 @@ public class EvalCommandHandler extends BotCommands.CommandHandler {
 				.evaluate();
 
 		event.respond("eval: result: " + result);
-	}
-
-	@Override
-	public String getHelp(MessageEvent event, String[] args) {
-		return "Evaluates an arithmetic expression, constants e and pi available";
 	}
 }
