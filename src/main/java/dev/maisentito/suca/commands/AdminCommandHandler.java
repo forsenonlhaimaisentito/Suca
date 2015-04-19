@@ -35,7 +35,7 @@ public class AdminCommandHandler extends BotCommands.CommandHandler {
 
 	@Override
 	public void handleCommand(MessageEvent event, String[] args) throws Throwable {
-		if (event.getUser().isVerified() &&
+		if ((!Main.config.verifyOwner || event.getUser().isVerified()) &&
 				event.getUser().getNick().equals(getStringGlobal(Main.GLOBAL_OWNER, ""))) {
 			if (args.length < 2) {
 				if (args.length == 1) {

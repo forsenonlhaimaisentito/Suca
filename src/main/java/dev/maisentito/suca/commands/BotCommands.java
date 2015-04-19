@@ -77,7 +77,7 @@ public class BotCommands extends ChannelMessagesPipeline.MessageMiddleware {
 		addCommandHandler("quit", new CommandHandler(getGlobals()) {
 			@Override
 			public void handleCommand(MessageEvent event, String[] args) throws Throwable {
-				if (event.getUser().isVerified() &&
+				if ((!Main.config.verifyOwner || event.getUser().isVerified()) &&
 						event.getUser().getNick().equals(getStringGlobal(Main.GLOBAL_OWNER, ""))) {
 					event.getBot().stopBotReconnect();
 					event.getBot().sendIRC().quitServer(

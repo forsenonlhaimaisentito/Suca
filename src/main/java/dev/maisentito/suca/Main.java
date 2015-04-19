@@ -31,20 +31,30 @@ import org.pircbotx.PircBotX;
 import sun.security.util.Password;
 
 import javax.net.ssl.SSLSocketFactory;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 public class Main {
-	public static final String NICK = "Suca";
-	public static final String NAME = "Suca";
-	public static final String USER = "legit";
-
 	public static final String GLOBAL_OWNER = "owner_nick";
 	public static final String GLOBAL_VERSION = "version";
 	public static final String GLOBAL_USERAGENT = "user_agent";
+	public static final String HOME = (System.getenv("HOME") == null) ? "./" : System.getenv("HOME");
+	public static final File CONFIG = new File(HOME, ".sucarc");
+
+	public static BotConfig config;
 
 	public static void main(String[] args) throws Exception {
+		if (CONFIG.exists()) {
+			config = BotConfig.fromJson(new FileReader(CONFIG));
+		} else {
+			config = new BotConfig();
+		}
+
 		Bundle globals = new Bundle();
-		globals.put(GLOBAL_OWNER, "DiZero");
+		globals.put(GLOBAL_OWNER, config.owner);
 		globals.put(GLOBAL_VERSION, "1.0");
 		globals.put(GLOBAL_USERAGENT, "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
 
@@ -76,32 +86,50 @@ public class Main {
 		messagesPipeline.addMessageMiddleware(new RandomN0neImplicationsListener(globals));
 		messagesPipeline.addMessageMiddleware(new WordListener(globals));
 
-		System.out.print("Password: ");
-		char[] pass = Password.readPassword(System.in);
+		if (config.password == null) {
+			System.out.print("Password: ");
+			char[] pass = Password.readPassword(System.in);
+			config.password = String.valueOf(pass);
+		}
 
 		@SuppressWarnings("unchecked")
-		Configuration configuration = new Configuration.Builder()
-				.setName(NICK)
-				.setRealName(NAME)
-				.setLogin(USER)
-				.setNickservPassword(String.valueOf(pass))
+		Configuration.Builder builder = new Configuration.Builder()
+				.setName(config.nick)
+				.setRealName(config.realname)
+				.setLogin(config.username)
+				.setNickservPassword(config.password)
 						// .addCapHandler(new SASLCapHandler(NICK, String.valueOf(pass)))
 				.setVersion("Suca " + globals.getString(GLOBAL_VERSION, "unknown"))
 				.setEncoding(Charset.forName("UTF-8"))
-				.setServerHostname("irc.freenode.net")
-				.setServerPort(6697)
-				.setSocketFactory(SSLSocketFactory.getDefault())
+				.setServerHostname(config.server)
+				.setServerPort(config.port)
 				.addListener(messagesPipeline)
-				.addListener(new CloakListener("#legit"))
 				.addListener(new JoinGreeterListener(globals))
 				.addListener(new KickRejoinListener())
 				.addListener(new KickRevengeListener())
 				.addListener(seen.getUpdater())
-				.setMessageDelay(1500)
-				.buildConfiguration();
+				.setMessageDelay(1500);
 
+		if (config.ssl) {
+			builder.setSocketFactory(SSLSocketFactory.getDefault());
+		}
 
-		@SuppressWarnings("unchecked") PircBotX bot = new PircBotX(configuration);
+		if (config.wait_cloak > 0) {
+			builder.addListener(new CloakListener(config.wait_cloak, config.channels));
+		} else {
+			for (String channel : config.channels) {
+				builder.addAutoJoinChannel(channel);
+			}
+		}
+
+		@SuppressWarnings("unchecked") PircBotX bot = new PircBotX(builder.buildConfiguration());
 		bot.startBot();
+	}
+
+	public static void closeQuietly(Closeable c) {
+		try {
+			c.close();
+		} catch (IOException e) {
+		}
 	}
 }
