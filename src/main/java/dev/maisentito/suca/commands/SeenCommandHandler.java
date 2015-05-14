@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@BotCommand(name = "seen", minArgc = 1)
+@BotCommand(name = "seen", minArgc = 1, help = "shows the last message sent by an user")
 public class SeenCommandHandler extends BotCommands.CommandHandler {
 	private SeenDataUpdater mUpdater;
 	private Map<String, SeenData> mSeenUsers;

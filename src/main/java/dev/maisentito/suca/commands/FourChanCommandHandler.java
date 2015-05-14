@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-@BotCommand(name = "4chan", minArgc = 3)
+@BotCommand(name = "4chan", minArgc = 3, help = "usage: 4chan search BOARD REGEX")
 public class FourChanCommandHandler extends BotCommands.CommandHandler {
 	public FourChanCommandHandler(Bundle globals) {
 		super(globals);
@@ -50,11 +50,6 @@ public class FourChanCommandHandler extends BotCommands.CommandHandler {
 				event.respond("!4chan: command not found: " + args[0]);
 				break;
 		}
-	}
-
-	@Override
-	public String getHelp(MessageEvent event, String[] args) {
-		return "usage: 4chan search BOARD REGEX";
 	}
 
 	private void searchCommand(MessageEvent event, String[] args) throws IOException {

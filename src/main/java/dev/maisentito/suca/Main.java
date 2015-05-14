@@ -60,6 +60,7 @@ public class Main {
 
 		HangmanCommandHandler hangman = new HangmanCommandHandler(globals);
 		SeenCommandHandler seen = new SeenCommandHandler(globals);
+		ToCommandHandler to = new ToCommandHandler(globals);
 
 		BotCommands commands = new BotCommands(globals);
 		commands.addCommandHandler(new AdminCommandHandler(globals));
@@ -74,6 +75,7 @@ public class Main {
 		commands.addCommandHandler(new TimerCommandHandler(globals));
 		commands.addCommandHandler(new FizzBuzzCommandHandler(globals));
 		commands.addCommandHandler(seen);
+		commands.addCommandHandler(to);
 
 		// commands.addCommandHandler("define", new DefineCommandHandler(globals));
 		SimpleCommands.addAll(commands, globals);
@@ -108,6 +110,7 @@ public class Main {
 				.addListener(new KickRejoinListener())
 				.addListener(new KickRevengeListener())
 				.addListener(seen.getUpdater())
+				.addListener(to.getListener())
 				.setMessageDelay(1500);
 
 		if (config.ssl) {
